@@ -12,6 +12,11 @@ docker build -t ducc ducc/
 ```shell
 docker run -t -i -p 61617:61617 -p 42133:42133 -p 42155:42155 -p 2222:22 -d --name textimager-server ducc
 ```
+* Inspect server startup log:
+```shell
+docker exec -it textimager-server tail '/home/ducc/ducc_startup.log'
+```
+Startup will take about 5 min. As soon as the startup log prints 'All threads returned', the startup was successful.
 ## Add Service
 Every class implementing the [AnalysisComponent](https://uima.apache.org/d/uimaj-2.7.0/apidocs/org/apache/uima/analysis_component/AnalysisComponent.html) can be distributed as a service.
 Jars containing the class and all its dependencies have to be exported.
