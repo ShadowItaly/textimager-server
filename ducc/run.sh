@@ -15,9 +15,8 @@ chown -Rf root.root /home/ducc/.ssh/
 
 printf "==Ducc installation==\n\n"
 # UIMA DUCC installation
-cd /home/ducc/ && tar xzf uima-ducc-2.2.2-bin.tar.gz && mv apache-uima-ducc-2.2.2/* /home/ducc/apache-uima-ducc/
-rm -Rf /home/ducc/apache-uima-ducc-2.2.2/
-
+cd /home/ducc/ && tar xzf uima-ducc-3.0.0-bin.tar.gz && mv apache-uima-ducc-3.0.0/* /home/ducc/apache-uima-ducc/
+rm -Rf /home/ducc/apache-uima-ducc-3.0.0/
 
 printf "==chown==\n\n"
 cd /home/ducc/apache-uima-ducc/admin/
