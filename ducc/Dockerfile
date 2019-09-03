@@ -1,7 +1,7 @@
-FROM java
+FROM openjdk:8-jdk-stretch
 
 
-RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less
+RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less dnsutils
 
 
 # UIMA DUCC preparation
@@ -13,7 +13,7 @@ RUN useradd -m ducc -s /bin/bash
 RUN mkdir /home/ducc/.ssh/
 COPY ./id_rsa* /home/ducc/.ssh/
 
-RUN wget http://artfiles.org/apache.org//uima//uima-ducc-2.2.2/uima-ducc-2.2.2-bin.tar.gz -P /home/ducc
+RUN wget http://ftp.halifax.rwth-aachen.de/apache//uima//uima-ducc-3.0.0/uima-ducc-3.0.0-bin.tar.gz -P /home/ducc
 COPY ./run.sh /home/ducc/apache-uima-ducc/
 COPY ./activemq-ducc.xml /home/ducc/
 COPY ./DUCCServiceCreator.jar /home/ducc/
