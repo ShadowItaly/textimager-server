@@ -1,0 +1,2 @@
+$DUCC_HOME/bin/ducc_services --register --debug --instances 2 --autostart true --description "BreakIteratorSegmenter" --process_jvm_args "-DdefaultBrokerURL=tcp://localhost:61617" --classpath '$DUCC_HOME/apache-uima/lib/*:$DUCC_HOME/jars/*:$DUCC_HOME/apache-uima/apache-activemq/lib/*:$DUCC_HOME/apache-uima/apache-activemq/lib/optional/*' --service_ping_arguments 'broker-jmx-port=1100' --environment 'AE_INIT_TIME=5000 AE_INIT_RANGE=1000 INIT_ERROR=0' --process_memory_size 2 --process_descriptor_DD 'deployment_BreakIteratorSegmenter.xml' --scheduling_class 'fixed'
+

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+	<implementationName>org.dkpro.core.io.text.TextReader
+	</implementationName>
+	<processingResourceMetaData>
+		<name>Text Reader</name>
+		<description>UIMA collection reader for plain text files.
+		</description>
+		<version>1.12.0</version>
+		<vendor>DKPro Core Project</vendor>
+		<copyright>Copyright 2007-2019
+			Ubiquitous Knowledge Processing (UKP) Lab
+			Technische Universität Darmstadt
+		</copyright>
+		<configurationParameters>
+			<configurationParameter>
+				<name>sourceEncoding</name>
+				<description>Name of configuration parameter that contains the
+					character encoding used by the input files.</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>sourceLocation</name>
+				<description>Location from which the input is read.</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>false</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>patterns</name>
+				<description>A set of Ant-like include/exclude patterns. A pattern
+					starts with #INCLUDE_PREFIX [+]
+					if it is an include pattern and with #EXCLUDE_PREFIX [-] if it is an
+					exclude pattern.
+					The wildcard &lt;code&gt;&amp;#47;**&amp;#47;&lt;/code&gt; can be used
+					to address any number of sub-directories.
+					The wildcard * can be used to a address a part of a name.
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>false</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>useDefaultExcludes</name>
+				<description>Use the default excludes.</description>
+				<type>Boolean</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>includeHidden</name>
+				<description>Include hidden files and directories.</description>
+				<type>Boolean</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>language</name>
+				<description>Name of optional configuration parameter that contains
+					the language of the documents in the
+					input directory. If specified, this information will be added to the
+					CAS.
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>false</mandatory>
+			</configurationParameter>
+			<configurationParameter>
+				<name>logFreq</name>
+				<description>The frequency with which read documents are logged.
+					&lt;p&gt;
+					Set to 0 or negative values to deactivate logging.
+				</description>
+				<type>Integer</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
+		</configurationParameters>
+		<configurationParameterSettings>
+			<nameValuePair>
+				<name>sourceEncoding</name>
+				<value>
+					<string>UTF-8</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>useDefaultExcludes</name>
+				<value>
+					<boolean>true</boolean>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>includeHidden</name>
+				<value>
+					<boolean>false</boolean>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>logFreq</name>
+				<value>
+					<integer>1</integer>
+				</value>
+			</nameValuePair>
+		</configurationParameterSettings>
+		<typeSystemDescription>
+			<imports>
+				<import location="../TypeSystem.xml" />
+			</imports>
+		</typeSystemDescription>
+		<fsIndexCollection />
+		<capabilities>
+			<capability>
+				<inputs />
+				<outputs>
+					<type>de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData
+					</type>
+				</outputs>
+				<languagesSupported />
+				<mimeTypesSupported>
+					<mimeType>text/plain</mimeType>
+				</mimeTypesSupported>
+			</capability>
+		</capabilities>
+		<operationalProperties>
+			<modifiesCas>true</modifiesCas>
+			<multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+			<outputsNewCASes>true</outputsNewCASes>
+		</operationalProperties>
+	</processingResourceMetaData>
+	<externalResourceDependencies>
+		<externalResourceDependency>
+			<key>resolver</key>
+			<description>Name of optional external (UIMA) resource that contains
+				the Locator for a (Spring)
+				ResourcePatternResolver implementation for locating (spring) resources.
+			</description>
+			<interfaceName>java.lang.Object</interfaceName>
+			<optional>true</optional>
+		</externalResourceDependency>
+	</externalResourceDependencies>
+</collectionReaderDescription>
+

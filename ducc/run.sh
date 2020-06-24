@@ -27,7 +27,7 @@ chown ducc.ducc -Rf /tmp/res/
 printf "==ducc_post_install==\n\n"
 export LOGNAME="ducc"
 cd /home/ducc/apache-uima-ducc/admin/
-su - ducc -c "cd /home/ducc/apache-uima-ducc/admin/ && printf '\n\n' | /home/ducc/apache-uima-ducc/admin/ducc_post_install"
+su - ducc -c "cd /home/ducc/apache-uima-ducc/admin/ && printf '\n/usr/local/openjdk-8/bin/java' | /home/ducc/apache-uima-ducc/admin/ducc_post_install"
 
 #Anonymous login to DUCC. Modify in future release
 mv /home/ducc/activemq-ducc.xml /home/ducc/apache-uima-ducc/apache-uima/apache-activemq/conf/activemq-ducc.xml

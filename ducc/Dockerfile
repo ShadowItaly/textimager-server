@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-stretch
+FROM openjdk:8-jdk
 
 
 RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less dnsutils
@@ -17,6 +17,8 @@ RUN wget http://ftp.halifax.rwth-aachen.de/apache//uima//uima-ducc-3.0.0/uima-du
 COPY ./run.sh /home/ducc/apache-uima-ducc/
 COPY ./activemq-ducc.xml /home/ducc/
 COPY ./DUCCServiceCreator.jar /home/ducc/
+COPY ./serviceScripts /home/ducc/serviceScripts
+COPY ./testService/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/apache-uima-ducc/jars/textimager-uima-deploy-0.2.6-mini-deploy.jar
 
 USER root
 CMD /home/ducc/apache-uima-ducc/run.sh >> /home/ducc/ducc_startup.log

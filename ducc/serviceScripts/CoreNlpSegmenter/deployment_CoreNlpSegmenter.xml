@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDeploymentDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<name>CoreNlpSegmenter</name>
+	<vendor>TextImager</vendor>
+	<version>0.1.0</version>
+	<deployment protocol="jms" provider="activemq">
+		<service>
+			<inputQueue endpoint="CoreNlpSegmenter" brokerURL="${defaultBrokerURL}" prefetch="0"/>
+			<topDescriptor>
+				<import location="CoreNlpSegmenter.xml"/>
+			</topDescriptor>
+		</service>
+	</deployment>
+</analysisEngineDeploymentDescription>
