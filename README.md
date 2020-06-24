@@ -4,14 +4,24 @@
 * Docker: https://docs.docker.com/installation/#installation
 
 ## Installation
+* Checkout this repository
+* cd /path/to/textimager-server
+* mkdir 
 * Build image:
 ```shell
-docker build -t ducc ducc/
+cd /path/to/textimager-server
+mkdir duccDataContainer
+docker-compose build
 ```
 * Run server:
 ```shell
-docker run -t -i -p 61617:61617 -p 42133:42133 -p 42155:42155 -p 2222:22 -d --name textimager-server ducc
+docker-compose up
 ```
+or as deamon
+```shell
+docker-compose up -d
+```
+
 * Inspect server startup log:
 ```shell
 docker exec -it textimager-server tail -f '/home/ducc/ducc_startup.log'
