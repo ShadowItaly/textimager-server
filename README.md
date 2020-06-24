@@ -5,8 +5,6 @@
 
 ## Installation
 * Checkout this repository
-* cd /path/to/textimager-server
-* mkdir 
 * Build image:
 ```shell
 cd /path/to/textimager-server
