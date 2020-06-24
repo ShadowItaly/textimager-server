@@ -34,7 +34,7 @@ sh addService.sh [classpath] [classname]
 ```
 Example:
 ```shell
-sh addService.sh testService/ de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter
+sh addService.sh ducc/testService/ de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter
 ```
 
 An instance of BreakIteratorSegmenter will be added to the Server.
