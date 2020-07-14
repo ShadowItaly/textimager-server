@@ -22,24 +22,29 @@ cp -Rf /home/ducc/.ssh/ /root/
 chown -Rf root.root /root/.ssh/
 
 # unpack UIMA DUCC
+mkdir /home/ducc/ducc/
+mkdir /home/ducc/ducc/apache-uima-ducc/
 cd /home/ducc/
 tar xzf uima-ducc-3.0.0-bin.tar.gz 
-mv apache-uima-ducc-3.0.0/* /home/ducc/apache-uima-ducc/
+mv apache-uima-ducc-3.0.0/* /home/ducc/ducc/apache-uima-ducc/
 rm -Rf /home/ducc/apache-uima-ducc-3.0.0/
 chown ducc.ducc -Rf /home/ducc/
 
 # DUCC post installation scripts
 export LOGNAME="ducc"
-cd /home/ducc/apache-uima-ducc/admin/
+cd /home/ducc/ducc/apache-uima-ducc/admin/
 INTERNAL_HOSTNAME=$(hostname)
-su - ducc -c "cd /home/ducc/apache-uima-ducc/admin/ && /home/ducc/apache-uima-ducc/admin/ducc_post_install --head-node \"$INTERNAL_HOSTNAME\" --jvm \"/usr/local/openjdk-8/bin/java\""
+su - ducc -c "cd /home/ducc/ducc/apache-uima-ducc/admin/ && /home/ducc/ducc/apache-uima-ducc/admin/ducc_post_install --head-node \"$INTERNAL_HOSTNAME\" --jvm \"/usr/local/openjdk-8/bin/java\""
 
 # allow anonymous login to DUCC
 # TODO modify in future release
-mv /home/ducc/activemq-ducc.xml /home/ducc/apache-uima-ducc/apache-uima/apache-activemq/conf/activemq-ducc.xml
+mv /home/ducc/activemq-ducc.xml /home/ducc/ducc/apache-uima-ducc/apache-uima/apache-activemq/conf/activemq-ducc.xml
 
-# move add-node script
-mv /home/ducc/add-node.sh /home/ducc/apache-uima-ducc/add-node.sh
+# move other files...
+mv /home/ducc/add-node.sh /home/ducc/ducc/
+mv /home/ducc/DUCCServiceCreator.jar /home/ducc/ducc/
+mv /home/ducc/serviceScripts /home/ducc/ducc/
+mv /home/ducc/jars /home/ducc/ducc/
 
 # TODO ducc_ling
 #chown root.ducc /home/ducc/apache-uima-ducc/admin/ducc_ling
@@ -47,8 +52,8 @@ mv /home/ducc/add-node.sh /home/ducc/apache-uima-ducc/add-node.sh
 #chmod 4750 /home/ducc/apache-uima-ducc/admin/ducc_ling
 
 # finish installation
-su - ducc -c "/home/ducc/apache-uima-ducc/admin/check_ducc"
-su - ducc -c "/home/ducc/apache-uima-ducc/admin/start_ducc"
+su - ducc -c "/home/ducc/ducc/apache-uima-ducc/admin/check_ducc"
+su - ducc -c "/home/ducc/ducc/apache-uima-ducc/admin/start_ducc"
 
 # daemonize Docker container
 while true; do sleep 1; done

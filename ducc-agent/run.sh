@@ -38,7 +38,7 @@ chown -Rf root.root /root/.ssh/
 echo $TI_DOCKER_HEAD_IP $TI_DOCKER_HEAD_HOST >> /etc/hosts
 
 # add this agent to head
-su - root -c "ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP 'bash /home/ducc/apache-uima-ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT'"
+su - root -c "ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP 'bash /home/ducc/ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT'"
 
 # daemonize Docker container
 while true; do sleep 1; done

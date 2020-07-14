@@ -30,7 +30,7 @@ services:
       - '42155:42155'
       - '2222:22'
     volumes: 
-      - ./duccData:/home/ducc/apache-uima-ducc
+      - ./duccData:/home/ducc/ducc
     networks:
       - exchange
       

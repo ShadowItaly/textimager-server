@@ -21,20 +21,20 @@ COPY ./id_rsa* /home/ducc/.ssh/
 # run script: finishes initialization and starts DUCC head
 COPY ./run.sh /home/ducc/
 
-# add-node script: adds a new node to the DUCC head
-COPY ./add-node.sh /home/ducc/
-
 # modified to allow anonymous login to DUCC
 # TODO modify in future release
 COPY ./activemq-ducc.xml /home/ducc/
 
+# add-node script: adds a new node to the DUCC head
+COPY ./add-node.sh /home/ducc/
+
 # tool to generate service data
-COPY ./DUCCServiceCreator.jar /home/ducc/apache-uima-ducc/
+COPY ./DUCCServiceCreator.jar /home/ducc/
 
 # basic test services
 # TODO remove later
-COPY ./serviceScripts /home/ducc/apache-uima-ducc/
-COPY ./testService/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/apache-uima-ducc/jars/textimager-uima-deploy-0.2.6-mini-deploy.jar
+COPY ./serviceScripts /home/ducc/serviceScripts/
+COPY ./testService/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/jars/textimager-uima-deploy-0.2.6-mini-deploy.jar
 
 # initialize
 USER root

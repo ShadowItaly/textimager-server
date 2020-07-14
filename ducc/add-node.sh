@@ -32,13 +32,13 @@ else
 fi
 
 # add this agent to DUCC nodes list
-if grep -Fxq "$TI_DOCKER_AGENT_HOST" /home/ducc/apache-uima-ducc/resources/ducc.nodes
+if grep -Fxq "$TI_DOCKER_AGENT_HOST" /home/ducc/ducc/apache-uima-ducc/resources/ducc.nodes
 then
 	echo "agent $TI_DOCKER_AGENT_HOST already in ducc nodes file"
 else
-	su - ducc -c "echo \"\" >> /home/ducc/apache-uima-ducc/resources/ducc.nodes"
-	su - ducc -c "echo \"$TI_DOCKER_AGENT_HOST\" >> /home/ducc/apache-uima-ducc/resources/ducc.nodes"
+	su - ducc -c "echo \"\" >> /home/ducc/ducc/apache-uima-ducc/resources/ducc.nodes"
+	su - ducc -c "echo \"$TI_DOCKER_AGENT_HOST\" >> /home/ducc/ducc/apache-uima-ducc/resources/ducc.nodes"
 fi
 
 # "start" ducc to startup this agent
-su - ducc -c "/home/ducc/apache-uima-ducc/admin/start_ducc"
+su - ducc -c "/home/ducc/ducc/apache-uima-ducc/admin/start_ducc"

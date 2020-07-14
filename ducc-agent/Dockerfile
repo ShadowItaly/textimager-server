@@ -8,7 +8,7 @@ FROM openjdk:8-jdk
 RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less dnsutils vim
 
 # add local ducc user
-RUN useradd -m ducc -s /bin/bash
+RUN useradd -m ducc -s /bin/bash -d /home/ducc
 
 # copy ssh key
 # TODO this needs to be the same for head node and agents at the moment
