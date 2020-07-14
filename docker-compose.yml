@@ -11,7 +11,7 @@ services:
     ports: 
       - '27017:27017'
     volumes: 
-      - ./duccDB:/data/db
+      - duccDB:/data/db
     networks:
       - exchange
   
@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     container_name: 'textimager-server'
     hostname: 'textimager-server-head'
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server-head'
     restart: always
     ports:
       - '61617:61617'
@@ -30,9 +32,24 @@ services:
       - '42155:42155'
       - '2222:22'
     volumes: 
-      - ./duccData:/home/ducc/ducc
+      - duccData:/home/ducc/ducc
     networks:
       - exchange
+      
+volumes:
+  duccDB:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/duccDB"
+      
+  duccData:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/duccData"
       
 networks:
   exchange:
