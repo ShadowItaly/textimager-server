@@ -1,10 +1,7 @@
-# MediaWiki with MariaDB
-#
-# Access via "http://localhost:8080"
-#   (or "http://$(docker-machine ip):8080" if using docker-machine)
 version: '3.7'
+
 services:
-  mongodb_container:
+  textimager-database:
     image: mongo:4.2
     container_name: 'textimager-database'
     restart: always
@@ -14,35 +11,46 @@ services:
     ports: 
       - '27017:27017'
     volumes: 
-      - ./dbdata:/data/db
+      - duccDB:/data/db
     networks:
       - exchange
-
   
   textimager-server:
     depends_on:
-      - mongodb_container
+      - textimager-database
     build:
       context: ./ducc
       dockerfile: Dockerfile
+    container_name: 'textimager-server'
+    hostname: 'textimager-server-head'
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server-head'
     restart: always
     ports:
       - '61617:61617'
       - '42133:42133'
       - '42155:42155'
       - '2222:22'
-    container_name: textimager-server
     volumes: 
-      - duccDataContainer:/home/ducc
+      - duccData:/home/ducc/ducc
     networks:
       - exchange
+      
 volumes:
-  duccDataContainer:
+  duccDB:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/duccDataContainer"
+      device: "${PWD}/duccDB"
+      
+  duccData:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/duccData"
+      
 networks:
   exchange:
     driver: bridge
