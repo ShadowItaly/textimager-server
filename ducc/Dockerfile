@@ -21,9 +21,9 @@ RUN cp /home/ducc/.ssh/id_rsa.pub /home/ducc/.ssh/authorized_keys
 RUN echo "StrictHostKeyChecking=no" > /home/ducc/.ssh/config
 
 # modify access rights
-RUN chmod 700 /home/ducc/.ssh
-RUN chmod 600 /home/ducc/.ssh/id_rsa
-RUN chmod +r /home/ducc/.ssh/id_rsa.pub
+#RUN chmod 700 /home/ducc/.ssh
+#RUN chmod 600 /home/ducc/.ssh/id_rsa
+#RUN chmod +r /home/ducc/.ssh/id_rsa.pub
 
 # use the same key for root user
 RUN cp -Rf /home/ducc/.ssh/ /root/
