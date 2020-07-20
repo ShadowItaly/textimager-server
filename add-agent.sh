@@ -24,7 +24,7 @@ echo "ducc agent port: $TI_DOCKER_AGENT_PORT"
 docker run \
 	-d \
 	-p $TI_DOCKER_AGENT_PORT:22 \
-	-v textimager-server_duccData:/home/ducc/ducc \
+	-v ${PWD}/duccData:/home/ducc/ducc \
 	--name "textimager-agent-$TI_DOCKER_AGENT_HOST" \
 	--hostname "$TI_DOCKER_AGENT_HOST" \
 	-e TI_DOCKER_HEAD_HOST="$TI_DOCKER_HEAD_HOST" \
