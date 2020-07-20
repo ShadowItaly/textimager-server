@@ -26,6 +26,10 @@ if [ ! -e $DUCC_AGENT_INSTALLED ]; then
 	echo "    IdentityFile ~/.ssh/id_rsa" >> /home/ducc/.ssh/config
 	chown -Rf ducc.ducc /home/ducc/.ssh/
 
+
+	su - ducc -c "mkdir -p /home/ducc/ducc"
+	su - ducc -c "sshfs ducc@$TI_DOCKER_HEAD_HOST:/home/ducc/ducc /home/ducc/ducc"
+
 	# add this agent to head
 	ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP "bash /home/ducc/ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT"
 	

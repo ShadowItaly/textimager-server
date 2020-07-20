@@ -5,7 +5,7 @@
 FROM openjdk:8-jdk
 
 # install needed software
-RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less dnsutils vim
+RUN apt-get update && apt-get install -y make gcc net-tools openssh-server less dnsutils vim sshfs
 
 # add local ducc user
 RUN useradd -m ducc -s /bin/bash -d /home/ducc
