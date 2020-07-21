@@ -22,14 +22,25 @@ services:
       context: ./ducc
       dockerfile: Dockerfile
     container_name: 'textimager-server'
-    hostname: 'textimager-server-head'
+    hostname: 'alba2'
     environment:
-      TI_DOCKER_HEAD_HOST: 'textimager-server-head'
+      TI_DOCKER_HEAD_HOST: 'alba2'
     restart: always
     ports:
+      - '1100:1100'
+      - '2099:2099'
+      - '7199:7199'
+      - '19988:19988'
       - '61617:61617'
       - '42133:42133'
-      - '42155:42155'
+      - '42155:42155'      
+      - '1100:1100/udp'
+      - '2099:2099/udp'
+      - '7199:7199/udp'
+      - '19988:19988/udp'
+      - '61617:61617/udp'
+      - '42133:42133/udp'
+      - '42155:42155/udp'
       - '2222:22'
     volumes: 
       - duccData:/home/ducc/ducc

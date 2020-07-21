@@ -7,6 +7,7 @@ echo "ducc head port: $TI_DOCKER_HEAD_PORT"
 echo "ducc agent host: $TI_DOCKER_AGENT_HOST"
 echo "ducc agent ip: $TI_DOCKER_AGENT_IP"
 echo "ducc agent port: $TI_DOCKER_AGENT_PORT"
+echo "ducc agent memory limit: $TI_DOCKER_AGENT_MEMOY_LIMIT"
 
 # ssh
 service ssh start
@@ -31,7 +32,7 @@ if [ ! -e $DUCC_AGENT_INSTALLED ]; then
 	su - ducc -c "sshfs ducc@$TI_DOCKER_HEAD_HOST:/home/ducc/ducc /home/ducc/ducc"
 
 	# add this agent to head
-	ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP "bash /home/ducc/ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT"
+	ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP "bash /home/ducc/ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT $TI_DOCKER_AGENT_MEMOY_LIMIT"
 	
 	touch $DUCC_AGENT_INSTALLED
 else
