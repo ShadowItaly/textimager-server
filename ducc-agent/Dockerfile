@@ -45,7 +45,7 @@ ENV TI_DOCKER_AGENT_IP "1.2.3.4"
 # ssh port of this DUCC agent
 ENV TI_DOCKER_AGENT_PORT "2223"
 # memory limit
-ENV TI_DOCKER_AGENT_MEMOY_LIMIT="1"
+ENV TI_DOCKER_AGENT_MEMORY_LIMIT="1"
 
 # run script: finishes initialization and starts DUCC agent
 COPY ./run.sh /home/ducc/

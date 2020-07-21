@@ -4,14 +4,14 @@
 TI_DOCKER_AGENT_HOST="$1"
 TI_DOCKER_AGENT_IP="$2"
 TI_DOCKER_AGENT_PORT="$3"
-TI_DOCKER_AGENT_MEMOY_LIMIT="$4"
+TI_DOCKER_AGENT_MEMORY_LIMIT="$4"
 
 # adds a new node to this DUCC head
 echo "adding node:"
 echo "  agent host: $TI_DOCKER_AGENT_HOST"
 echo "  agent ip: $TI_DOCKER_AGENT_IP"
 echo "  agent port: $TI_DOCKER_AGENT_PORT"
-echo "  agent memory limit: $TI_DOCKER_AGENT_MEMOY_LIMIT"
+echo "  agent memory limit: $TI_DOCKER_AGENT_MEMORY_LIMIT"
 
 # add agent to hosts file of head node
 # ...only if not already in there
@@ -48,7 +48,7 @@ then
 	echo "agent $TI_DOCKER_AGENT_HOST already in ducc memory limit file"
 else
 	su - ducc -c "echo \"\" >> /home/ducc/ducc/apache-uima-ducc/resources/ducc.memory_limits"
-	su - ducc -c "echo \"${TI_DOCKER_AGENT_HOST}=${TI_DOCKER_AGENT_MEMOY_LIMIT}\" >> /home/ducc/ducc/apache-uima-ducc/resources/ducc.memory_limits"
+	su - ducc -c "echo \"${TI_DOCKER_AGENT_HOST}=${TI_DOCKER_AGENT_MEMORY_LIMIT}\" >> /home/ducc/ducc/apache-uima-ducc/resources/ducc.memory_limits"
 fi
 
 # backup config for later
