@@ -10,6 +10,7 @@ TI_DOCKER_HEAD_PORT="2222"
 TI_DOCKER_AGENT_HOST="${LOCAL_HOSTNAME}-1"
 TI_DOCKER_AGENT_IP="$LOCAL_IP"
 TI_DOCKER_AGENT_PORT="2223"
+TI_DOCKER_AGENT_MEMORY_LIMIT="2"
 
 echo "building docker image for agent..."
 docker build -t textimager-agent ducc-agent/
@@ -20,6 +21,7 @@ echo "ducc head port: $TI_DOCKER_HEAD_PORT"
 echo "ducc agent host: $TI_DOCKER_AGENT_HOST"
 echo "ducc agent ip: $TI_DOCKER_AGENT_IP"
 echo "ducc agent port: $TI_DOCKER_AGENT_PORT"
+echo "ducc agent memory limit: $TI_DOCKER_AGENT_MEMORY_LIMIT"
 
 docker run \
 	-d \
@@ -32,6 +34,7 @@ docker run \
 	-e TI_DOCKER_AGENT_HOST="$TI_DOCKER_AGENT_HOST" \
 	-e TI_DOCKER_AGENT_IP="$TI_DOCKER_AGENT_IP" \
 	-e TI_DOCKER_AGENT_PORT="$TI_DOCKER_AGENT_PORT" \
+	-e TI_DOCKER_AGENT_MEMORY_LIMIT="$TI_DOCKER_AGENT_MEMORY_LIMIT" \
 	--cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined \
 	textimager-agent
 

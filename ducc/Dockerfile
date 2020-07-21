@@ -42,6 +42,9 @@ RUN cd /home/ducc/ && tar xzf uima-ducc-3.0.0-bin.tar.gz --strip=1 -C /home/ducc
 # TODO modify in future release
 COPY ./activemq-ducc.xml /home/ducc/ducc/apache-uima-ducc/apache-uima/apache-activemq/conf/activemq-ducc.xml
 
+# add modified ducc.py to enable fake memory limits in resources/ducc.memory_limits
+COPY ./ducc_3.0.0.py /home/ducc/ducc/apache-uima-ducc/admin/ducc.py
+
 # add-node script: adds a new node to the DUCC head
 COPY ./add-node.sh /home/ducc/ducc/
 
