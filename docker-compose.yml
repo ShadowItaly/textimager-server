@@ -25,6 +25,7 @@ services:
     hostname: 'alba2'
     environment:
       TI_DOCKER_HEAD_HOST: 'alba2'
+      TI_DOCKER_HEAD_IP: '141.2.108.222'
     restart: always
     ports:
       - '1100:1100'
@@ -41,6 +42,9 @@ services:
       - '61617:61617/udp'
       - '42133:42133/udp'
       - '42155:42155/udp'
+      - '7000:7000'
+      - '7001:7001'
+      - '9042:9042'
       - '2222:22'
     volumes: 
       - duccData:/home/ducc/ducc

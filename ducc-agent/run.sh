@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # finishes the initialization of DUCC agent and starts it
 echo "ducc head host: $TI_DOCKER_HEAD_HOST"
@@ -19,6 +19,11 @@ if [ ! -e $DUCC_AGENT_INSTALLED ]; then
 	# add head node ip to local hosts file
 	# TODO better manage with docker parameter?
 	echo $TI_DOCKER_HEAD_IP $TI_DOCKER_HEAD_HOST >> /etc/hosts
+	#echo $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_HOST >> /etc/hosts
+	
+	# remove own local docker ip and replace with external
+	#sed --in-place=backup "s/${TI_DOCKER_AGENT_HOST}/d" /etc/hosts
+	#echo $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_HOST >> /etc/hosts
 	
 	# add head node to local ssh config to enable login on different port
 	echo "Host $TI_DOCKER_HEAD_HOST" >> /home/ducc/.ssh/config
@@ -27,7 +32,7 @@ if [ ! -e $DUCC_AGENT_INSTALLED ]; then
 	echo "    IdentityFile ~/.ssh/id_rsa" >> /home/ducc/.ssh/config
 	chown -Rf ducc.ducc /home/ducc/.ssh/
 
-
+	# mount shared folder using sshfs
 	su - ducc -c "mkdir -p /home/ducc/ducc"
 	su - ducc -c "sshfs ducc@$TI_DOCKER_HEAD_HOST:/home/ducc/ducc /home/ducc/ducc"
 

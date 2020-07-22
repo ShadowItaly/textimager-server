@@ -54,6 +54,7 @@ COPY ./DUCCServiceCreator.jar /home/ducc/ducc/
 # basic test services
 # TODO remove later
 COPY ./serviceScripts /home/ducc/ducc/serviceScripts/
+COPY ./texte /home/ducc/ducc/texte/
 COPY ./testService/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/ducc/jars/textimager-uima-deploy-0.2.6-mini-deploy.jar
 
 # TODO ducc_ling
@@ -61,12 +62,13 @@ COPY ./testService/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/ducc/
 #chmod 700 /home/ducc/apache-uima-ducc/admin/
 #chmod 4750 /home/ducc/apache-uima-ducc/admin/ducc_ling
 
-# ducc head hostname
+# ducc head hostname / ip
 ENV TI_DOCKER_HEAD_HOST "textimager-server-head"
+ENV TI_DOCKER_HEAD_IP "1.2.3.4"
 
 # run script: finishes initialization and starts DUCC
 COPY ./run.sh /home/ducc/
 
 USER root
 RUN chown -Rf ducc.ducc /home/ducc/
-CMD /home/ducc/run.sh
+CMD ["/bin/bash", "/home/ducc/run.sh"]

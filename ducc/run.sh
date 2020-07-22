@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # resore backup if available
 if [ -e "/home/ducc/ducc/backup/etc_hosts" ]; then
@@ -22,6 +22,12 @@ service ssh start
 DUCC_INSTALLED="/home/ducc/ducc/.ducc_installed"
 if [ ! -e $DUCC_INSTALLED ]; then
 	echo "installing ducc..."
+		
+	# remove own local docker ip and replace with external
+	#cp /etc/hosts /etc/hosts_backup
+	#sed --in-place=.bak "/$TI_DOCKER_HEAD_HOST/d" /etc/hosts
+	#sed --in-place=.bak "/alba2/d" /etc/hosts
+	#echo $TI_DOCKER_HEAD_IP $TI_DOCKER_HEAD_HOST >> /etc/hosts
 	
 	# DUCC post installation scripts
 	export LOGNAME="ducc"

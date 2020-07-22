@@ -50,6 +50,9 @@ ENV TI_DOCKER_AGENT_MEMORY_LIMIT="1"
 # run script: finishes initialization and starts DUCC agent
 COPY ./run.sh /home/ducc/
 
+# change ssh port
+#RUN echo "Port $TI_DOCKER_AGENT_PORT" >> /etc/ssh/sshd_config
+
 # initialize
 USER root
 CMD /home/ducc/run.sh
