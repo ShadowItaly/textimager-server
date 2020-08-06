@@ -1,0 +1,92 @@
+version: '3.7'
+
+x-agent-base: &agent-base
+  image: ${REGISTRY}/textimager-agent:${TEXTIMAGER_AGENT_VERSION}
+  environment:
+    TI_DOCKER_HEAD_HOST: 'textimager-server'
+    TI_DOCKER_AGENT_MEMORY_LIMIT: '2'
+  volumes:
+    - type: volume
+      source: ducc_shared
+      target: /home/ducc/ducc
+      volume:
+        nocopy: true
+    - type: volume
+      source: ducc_corpora
+      target: /home/ducc/corpora
+      volume:
+        nocopy: true
+  networks:
+    - ducc_net
+  deploy:
+    replicas: 1
+
+services:
+  textimager-server:
+    image: ${REGISTRY}/textimager-server:${TEXTIMAGER_SERVER_VERSION}
+    hostname: 'textimager-server'
+    ports:
+      - '42133:42133'
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
+      - type: volume
+        source: ducc_corpora
+        target: /home/ducc/corpora
+        volume:
+          nocopy: true
+    networks:
+      - ducc_net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == pc-1
+  
+  textimager-agent-1:
+    <<: *agent-base
+    hostname: 'textimager-agent-1'    
+    environment:
+      TI_DOCKER_AGENT_MEMORY_LIMIT: '1'
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == pc-1
+
+  textimager-agent-2:
+    <<: *agent-base
+    hostname: 'textimager-agent-2'    
+    environment:
+      TI_DOCKER_AGENT_MEMORY_LIMIT: '2'
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == pc-2
+      
+volumes:
+  ducc_shared:
+    driver: vieux/sshfs
+    driver_opts:
+      sshcmd: "${SSHFS_BASEDIR}/ducc_swarm_shared"
+      password: "${SSHFS_PASSWORD}"
+      idmap: user
+      allow_other: ""
+      uid: "1000"
+      gid: "1000"
+
+  ducc_corpora:
+    driver: vieux/sshfs
+    driver_opts:
+      sshcmd: "${SSHFS_BASEDIR}/ducc_corpora"
+      password: "${SSHFS_PASSWORD}"
+      idmap: user
+      allow_other: ""
+      uid: "1000"
+      gid: "1000"
+      
+networks:
+  ducc_net:
+    driver: overlay

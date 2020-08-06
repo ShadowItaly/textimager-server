@@ -1,39 +1,63 @@
 #!/bin/bash
 
-# resore backup if available
-if [ -e "/home/ducc/ducc/backup/etc_hosts" ]; then
-	echo "restoring /etc/hosts file..."
-	cp /home/ducc/ducc/backup/etc_hosts /etc/hosts
-fi
-if [ -e "/home/ducc/ducc/backup/ducc_ssh_config" ]; then
-	echo "restoring ducc shh config..."
-	cp /home/ducc/ducc/backup/ducc_ssh_config /home/ducc/.ssh/config
-fi
+set -e
 
-# ssh
+# update ssh key access rights
 chown -Rf ducc.ducc /home/ducc/.ssh
 chmod 700 /home/ducc/.ssh
 chmod 600 /home/ducc/.ssh/id_rsa
-chmod +r /home/ducc/.ssh/id_rsa.pub
+chmod 644 /home/ducc/.ssh/id_rsa.pub
 
+chown -Rf root.root /root/.ssh
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/id_rsa
+chmod 644 /root/.ssh/id_rsa.pub
+
+# ssh
 service ssh start
 
 # ducc install
 DUCC_INSTALLED="/home/ducc/ducc/.ducc_installed"
 if [ ! -e $DUCC_INSTALLED ]; then
 	echo "installing ducc..."
-		
-	# remove own local docker ip and replace with external
-	#cp /etc/hosts /etc/hosts_backup
-	#sed --in-place=.bak "/$TI_DOCKER_HEAD_HOST/d" /etc/hosts
-	#sed --in-place=.bak "/alba2/d" /etc/hosts
-	#echo $TI_DOCKER_HEAD_IP $TI_DOCKER_HEAD_HOST >> /etc/hosts
+	
+	# create dirs...
+	su - ducc -c "mkdir -p /home/ducc/ducc/apache-uima-ducc/"
+	su - ducc -c "mkdir -p /home/ducc/ducc/jars/"
+	
+	# download and unpack uima ducc
+	su - ducc -c "wget http://ftp.halifax.rwth-aachen.de/apache/uima/uima-ducc-3.0.0/uima-ducc-3.0.0-bin.tar.gz -P /home/ducc"
+	su - ducc -c "tar xzf uima-ducc-3.0.0-bin.tar.gz --strip=1 -C /home/ducc/ducc/apache-uima-ducc/"
+	
+	# allow anonymous login to DUCC
+	# TODO modify in future release
+	su - ducc -c "mv /home/ducc/activemq-ducc.xml /home/ducc/ducc/apache-uima-ducc/apache-uima/apache-activemq/conf/activemq-ducc.xml"
+	
+	# add modified ducc.py to enable fake memory limits in resources/ducc.memory_limits
+	su - ducc -c "mv /home/ducc/ducc_3.0.0.py /home/ducc/ducc/apache-uima-ducc/admin/ducc.py"
+	
+	# add modified db_util.py to wait for db init longer
+	su - ducc -c "mv /home/ducc/db_util_3.0.0.py /home/ducc/ducc/apache-uima-ducc/admin/db_util.py"
+	
+	# add-node script: adds a new node to the DUCC head
+	su - ducc -c "mv /home/ducc/add-node.sh /home/ducc/ducc/add-node.sh"
+
+	# tool to generate service data
+	su - ducc -c "mv /home/ducc/DUCCServiceCreator.jar /home/ducc/ducc/DUCCServiceCreator.jar"
+	
+	# basic test services
+	# TODO remove later
+	su - ducc -c "mv /home/ducc/serviceScripts /home/ducc/ducc/"
+	su - ducc -c "mv /home/ducc/texte /home/ducc/ducc/"
+	su - ducc -c "mv /home/ducc/textimager-uima-deploy-0.2.6-mini-deploy.jar /home/ducc/ducc/jars/textimager-uima-deploy-0.2.6-mini-deploy.jar"
 	
 	# DUCC post installation scripts
-	export LOGNAME="ducc"
-	su - ducc -c "cd /home/ducc/ducc/apache-uima-ducc/admin/ && /home/ducc/ducc/apache-uima-ducc/admin/ducc_post_install --head-node \"${TI_DOCKER_HEAD_HOST}\" --jvm \"/usr/local/openjdk-8/bin/java\""
+	LOCAL_HOSTNAME=$(hostname)
+	export LOGNAME="ducc"	
+	su - ducc -c "cd /home/ducc/ducc/apache-uima-ducc/admin/ && /home/ducc/ducc/apache-uima-ducc/admin/ducc_post_install --head-node \"${LOCAL_HOSTNAME}\" --jvm \"/usr/local/openjdk-8/bin/java\""
 	
 	touch $DUCC_INSTALLED
+	echo "ducc finished installing"
 else
 	echo "ducc already installed"
 fi
