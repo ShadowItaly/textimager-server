@@ -1,40 +1,43 @@
-#!/bin/sh
+#!/bin/bash
 
-# finishes the initialization of DUCC agent and starts it
-echo "ducc head host: $TI_DOCKER_HEAD_HOST"
-echo "ducc head ip: $TI_DOCKER_HEAD_IP"
-echo "ducc head port: $TI_DOCKER_HEAD_PORT"
-echo "ducc agent host: $TI_DOCKER_AGENT_HOST"
-echo "ducc agent ip: $TI_DOCKER_AGENT_IP"
-echo "ducc agent port: $TI_DOCKER_AGENT_PORT"
-echo "ducc agent memory limit: $TI_DOCKER_AGENT_MEMORY_LIMIT"
+set -e
+
+# update ssh key access rights
+chown -Rf ducc.ducc /home/ducc/.ssh
+chmod 700 /home/ducc/.ssh
+chmod 600 /home/ducc/.ssh/id_rsa
+chmod 644 /home/ducc/.ssh/id_rsa.pub
+
+chown -Rf root.root /root/.ssh
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/id_rsa
+chmod 644 /root/.ssh/id_rsa.pub
 
 # ssh
 service ssh start
 
 DUCC_AGENT_INSTALLED="/home/ducc/.ducc_agent_installed"
 if [ ! -e $DUCC_AGENT_INSTALLED ]; then
+	# wait for ducc head to be installed...
+	DUCC_INSTALLED="/home/ducc/ducc/.ducc_installed"
+	echo "checking if ducc head is ready..."
+	while [ ! -e $DUCC_INSTALLED ]
+	do
+		echo "waiting for ducc head to be ready..."
+		sleep 30
+	done
+	sleep $[ ( $RANDOM % 30 )  + 1 ]s
+	
 	echo "installing ducc agent..."
-	
-	# add head node ip to local hosts file
-	# TODO better manage with docker parameter?
-	echo $TI_DOCKER_HEAD_IP $TI_DOCKER_HEAD_HOST >> /etc/hosts
-	
-	# add head node to local ssh config to enable login on different port
-	echo "Host $TI_DOCKER_HEAD_HOST" >> /home/ducc/.ssh/config
-	echo "    HostName $TI_DOCKER_HEAD_IP" >> /home/ducc/.ssh/config
-	echo "    Port $TI_DOCKER_HEAD_PORT" >> /home/ducc/.ssh/config
-	echo "    IdentityFile ~/.ssh/id_rsa" >> /home/ducc/.ssh/config
-	chown -Rf ducc.ducc /home/ducc/.ssh/
-
-
-	su - ducc -c "mkdir -p /home/ducc/ducc"
-	su - ducc -c "sshfs ducc@$TI_DOCKER_HEAD_HOST:/home/ducc/ducc /home/ducc/ducc"
+	echo "ducc head host: $TI_DOCKER_HEAD_HOST"
+	echo "ducc agent memory limit: $TI_DOCKER_AGENT_MEMORY_LIMIT"
 
 	# add this agent to head
-	ssh -p $TI_DOCKER_HEAD_PORT root@$TI_DOCKER_HEAD_IP "bash /home/ducc/ducc/add-node.sh $TI_DOCKER_AGENT_HOST $TI_DOCKER_AGENT_IP $TI_DOCKER_AGENT_PORT $TI_DOCKER_AGENT_MEMORY_LIMIT"
+	LOCAL_HOSTNAME=$(hostname)
+	su - ducc -c "ssh ducc@$TI_DOCKER_HEAD_HOST \"bash /home/ducc/ducc/add-node.sh $LOCAL_HOSTNAME $TI_DOCKER_AGENT_MEMORY_LIMIT\""
 	
 	touch $DUCC_AGENT_INSTALLED
+	echo "finished installing ducc agent"
 else
 	echo "ducc agent already installed"
 fi
