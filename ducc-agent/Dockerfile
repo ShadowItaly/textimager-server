@@ -29,6 +29,9 @@ RUN chown -Rf root.root /root/.ssh/
 ENV TI_DOCKER_HEAD_HOST "textimager-server"
 # memory limit
 ENV TI_DOCKER_AGENT_MEMORY_LIMIT="1"
+# id of docker group on host, get with:
+# getent group docker | cut -d: -f3
+ENV TI_DOCKER_HOST_GROUP_ID "99999"
 
 # run script: finishes initialization and starts DUCC agent
 COPY ./run.sh /home/ducc/
