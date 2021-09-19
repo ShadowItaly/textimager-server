@@ -1,23 +1,23 @@
 version: '3.7'
 
+networks:
+  ducc_net:
+    driver: overlay
+
+
 x-agent-base: &agent-base
   image: ${REGISTRY}/textimager-agent:${TEXTIMAGER_AGENT_VERSION}
   environment:
     TI_DOCKER_HEAD_HOST: 'textimager-server'
     TI_DOCKER_AGENT_MEMORY_LIMIT: '2'
+  networks:
+    - ducc_net
   volumes:
     - type: volume
       source: ducc_shared
       target: /home/ducc/ducc
       volume:
         nocopy: true
-    - type: volume
-      source: ducc_corpora
-      target: /home/ducc/corpora
-      volume:
-        nocopy: true
-  networks:
-    - ducc_net
   deploy:
     replicas: 1
 
@@ -27,45 +27,118 @@ services:
     hostname: 'textimager-server'
     ports:
       - '42133:42133'
+      - '22222:2222'
+      - '9010:9010'
+    networks:
+      - ducc_net
     volumes:
       - type: volume
         source: ducc_shared
         target: /home/ducc/ducc
         volume:
           nocopy: true
-      - type: volume
-        source: ducc_corpora
-        target: /home/ducc/corpora
-        volume:
-          nocopy: true
-    networks:
-      - ducc_net
     deploy:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == pc-1
+          - node.hostname == alexander-ThinkPad-T540p
   
   textimager-agent-1:
     <<: *agent-base
     hostname: 'textimager-agent-1'    
     environment:
       TI_DOCKER_AGENT_MEMORY_LIMIT: '1'
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == pc-1
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
 
-  textimager-agent-2:
-    <<: *agent-base
-    hostname: 'textimager-agent-2'    
-    environment:
-      TI_DOCKER_AGENT_MEMORY_LIMIT: '2'
     deploy:
       placement:
         constraints:
-          - node.hostname == pc-2
-      
+          - node.hostname == alexander-ThinkPad-T540p
+
+  textimager-gpu-agent-1:
+    image: ${REGISTRY}/textimager-gpu-agent:${TEXTIMAGER_AGENT_VERSION}
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server'
+      TI_DOCKER_GPU_CONTAINER: 0
+    networks:
+      - ducc_net
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
+    deploy:
+      restart_policy:
+        condition: none
+      mode: global
+    hostname: 'textimager-gpu-agent-1' 
+
+  textimager-gpu-agent-2:
+    image: ${REGISTRY}/textimager-gpu-agent:${TEXTIMAGER_AGENT_VERSION}
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server'
+      TI_DOCKER_GPU_CONTAINER: 1
+    networks:
+      - ducc_net
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
+
+    deploy:
+      restart_policy:
+        condition: none
+      mode: global
+    hostname: 'textimager-gpu-agent-2'   
+
+  textimager-gpu-agent-3:
+    image: ${REGISTRY}/textimager-gpu-agent:${TEXTIMAGER_AGENT_VERSION}
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server'
+      TI_DOCKER_GPU_CONTAINER: 2
+    networks:
+      - ducc_net
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
+
+    deploy:
+      restart_policy:
+        condition: none
+      mode: global
+    hostname: 'textimager-gpu-agent-3'
+
+  textimager-gpu-agent-4:
+    image: ${REGISTRY}/textimager-gpu-agent:${TEXTIMAGER_AGENT_VERSION}
+    environment:
+      TI_DOCKER_HEAD_HOST: 'textimager-server'
+      TI_DOCKER_GPU_CONTAINER: 3
+    networks:
+      - ducc_net
+    volumes:
+      - type: volume
+        source: ducc_shared
+        target: /home/ducc/ducc
+        volume:
+          nocopy: true
+
+    deploy:
+      restart_policy:
+        condition: none
+      mode: global
+    hostname: 'textimager-gpu-agent-4'
+
 volumes:
   ducc_shared:
     driver: vieux/sshfs
@@ -77,16 +150,3 @@ volumes:
       uid: "1000"
       gid: "1000"
 
-  ducc_corpora:
-    driver: vieux/sshfs
-    driver_opts:
-      sshcmd: "${SSHFS_BASEDIR}/ducc_corpora"
-      password: "${SSHFS_PASSWORD}"
-      idmap: user
-      allow_other: ""
-      uid: "1000"
-      gid: "1000"
-      
-networks:
-  ducc_net:
-    driver: overlay
